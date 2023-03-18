@@ -1,0 +1,16 @@
+## Unity
+Library/
+Logs/
+Temp/
+UserSettings/
+obj/
+UIElementsSchema/
+
+*.sln
+*.csproj
+
+## JetBrains
+.idea
+
+## macOS
+.DS_Store

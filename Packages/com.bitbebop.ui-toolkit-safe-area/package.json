@@ -1,0 +1,15 @@
+{
+  "name": "com.bitbebop.ui-toolkit-safe-area",
+  "version": "1.0.0",
+  "displayName": "UI Toolkit Safe Area",
+  "description": "A Safe Area Container for UI Toolkit.",
+  "unity": "2021.3",
+  "unityRelease": "1f1",
+  "documentationUrl": "https://github.com/artstorm/ui-toolkit-safe-area/blob/main/README.md",
+  "changelogUrl": "https://github.com/artstorm/ui-toolkit-safe-area/releases",
+  "licensesUrl": "https://github.com/artstorm/ui-toolkit-safe-area/blob/main/LICENSE",
+  "author": {
+    "name": "Johan Steen",
+    "url": "https://bitbebop.com/"
+  }
+}
