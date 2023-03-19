@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Bitbebop.SafeArea style="background-color: rgb(44, 89, 46); margin-left: 5px; margin-right: 5px; margin-top: 0; margin-bottom: 5px;">
+        <ui:VisualElement style="background-color: rgb(32, 41, 64); flex-grow: 1; flex-direction: column-reverse;">
+            <ui:Label text="got label" display-tooltip-when-elided="true" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+    </Bitbebop.SafeArea>
+</ui:UXML>
