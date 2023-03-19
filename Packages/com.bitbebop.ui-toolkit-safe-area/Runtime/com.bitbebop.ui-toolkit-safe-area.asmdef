@@ -1,3 +1,14 @@
 {
-	"name": "com.bitbebop.ui-toolkit-safe-area"
+    "name": "com.bitbebop.ui-toolkit-safe-area",
+    "rootNamespace": "Bitbebop",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
