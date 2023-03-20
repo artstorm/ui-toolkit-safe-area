@@ -38,8 +38,13 @@ namespace Bitbebop
 
         public SafeArea()
         {
-            style.flexGrow = 1;
-            style.flexShrink = 0;
+            // By using absolute position to fill the entire screen area, instead of setting flex grow,
+            // SafeArea containers can be stacked.
+            style.position = Position.Absolute;
+            style.top = 0;
+            style.bottom = 0;
+            style.left = 0;
+            style.right = 0;
             
             _contentContainer = new VisualElement();
             _contentContainer.name = "safe-area-content-container";
