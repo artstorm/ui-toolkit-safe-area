@@ -9,6 +9,12 @@
     <br/>
     <em>Provides a Safe Area Container for Unity's UI Toolkit.</em>
 </p>
+<p align="center">
+    <a href="https://openupm.com/packages/com.bitbebop.ui-toolkit-safe-area/"><img src="https://img.shields.io/npm/v/com.bitbebop.ui-toolkit-safe-area?label=openupm&amp;registry_uri=https://package.openupm.com&labelColor=383f47" alt="openupm" /></a>
+    <a href="https://mastodon.gamedev.place/@johansteen"><img src="https://img.shields.io/badge/mastodon-@johansteen-blue.svg?logo=mastodon&logoColor=ffffff&labelColor=383f47" alt="Mastodon: @johansteen" /></a>
+    <a href="https://twitter.com/artstorm"><img src="https://img.shields.io/badge/twitter-@artstorm-blue.svg?logo=twitter&logoColor=ffffff&labelColor=383f47" alt="Twitter: @artstorm" /></a>
+    <a href="https://discord.gg/WJn7w5WaU9"><img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=ffffff&labelColor=383f47" alt="Discord: Bitbebop" /></a>
+</p>
 
 ## About
 
@@ -42,7 +48,15 @@ Take a look at these screenshots which helps illustrate the differences how marg
 
 Requires Unity 2021.3 LTS or higher.
 
-### Via Unity Package Manager and Git URL
+### OpenUPM
+
+The package is available on the [OpenUPM registry](https://openupm.com). It's recommended to install it via [openupm-cli](https://github.com/openupm/openupm-cli).
+
+```sh
+openupm add com.bitbebop.ui-toolkit-safe-area
+```
+
+### Unity Package Manager and Git URL
 
 Install the package directly in Unity Package Manger using this URL:
 
