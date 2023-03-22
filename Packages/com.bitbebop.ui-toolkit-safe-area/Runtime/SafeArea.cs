@@ -110,12 +110,13 @@ namespace Bitbebop
             var leftTop = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, Screen.height - safeArea.yMax));
             var rightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
 
+            // If the user has flagged an edge as excluded, set that edge to 0.
             return new Offset()
             {
-                Left = leftTop.x,
-                Right = rightBottom.x,
-                Top = leftTop.y,
-                Bottom = rightBottom.y
+                Left = ExcludeLeft ? 0 : leftTop.x,
+                Right = ExcludeRight ? 0 : rightBottom.x,
+                Top = ExcludeTop ? 0 : leftTop.y,
+                Bottom = ExcludeBottom ? 0 : rightBottom.y
             };
         }
 
