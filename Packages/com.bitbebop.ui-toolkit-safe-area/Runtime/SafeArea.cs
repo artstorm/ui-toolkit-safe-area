@@ -21,7 +21,7 @@ namespace Bitbebop
 
         public new class UxmlFactory : UxmlFactory<SafeArea, UxmlTraits> {}
 
-        public bool CollapseMargin { get; set; }
+        public bool CollapseMargins { get; set; }
         public bool ExcludeLeft { get; set; }
         public bool ExcludeRight { get; set; }
         public bool ExcludeTop { get; set; }
@@ -30,7 +30,7 @@ namespace Bitbebop
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
-            private UxmlBoolAttributeDescription _collapseMarginAttr = new() { name = "collapse-margin", defaultValue = true };
+            private UxmlBoolAttributeDescription _collapseMarginsAttr = new() { name = "collapse-margins", defaultValue = true };
             private UxmlBoolAttributeDescription _excludeLeftAttr = new() { name = "exclude-left", defaultValue = false };
             private UxmlBoolAttributeDescription _excludeRightAttr = new() { name = "exclude-right", defaultValue = false };
             private UxmlBoolAttributeDescription _excludeTopAttr = new() { name = "exclude-top", defaultValue = false };
@@ -47,7 +47,7 @@ namespace Bitbebop
                 base.Init(ve, bag, cc);
                 var ate = ve as SafeArea;
 
-                ate.CollapseMargin = _collapseMarginAttr.GetValueFromBag(bag, cc);
+                ate.CollapseMargins = _collapseMarginsAttr.GetValueFromBag(bag, cc);
                 ate.ExcludeLeft = _excludeLeftAttr.GetValueFromBag(bag, cc);
                 ate.ExcludeRight = _excludeRightAttr.GetValueFromBag(bag, cc);
                 ate.ExcludeTop = _excludeTopAttr.GetValueFromBag(bag, cc);
@@ -88,7 +88,7 @@ namespace Bitbebop
                 var safeArea = GetSafeAreaOffset();
                 var margin = GetMarginOffset();
 
-                if (CollapseMargin)
+                if (CollapseMargins)
                 {
                     _contentContainer.style.marginLeft = Mathf.Max(margin.Left, safeArea.Left) - margin.Left;
                     _contentContainer.style.marginRight = Mathf.Max(margin.Right, safeArea.Right) - margin.Right;
