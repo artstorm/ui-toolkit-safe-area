@@ -22,11 +22,19 @@ namespace Bitbebop
         public new class UxmlFactory : UxmlFactory<SafeArea, UxmlTraits> {}
 
         public bool CollapseMargin { get; set; }
+        public bool ExcludeLeft { get; set; }
+        public bool ExcludeRight { get; set; }
+        public bool ExcludeTop { get; set; }
+        public bool ExcludeBottom { get; set; }
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
             private UxmlBoolAttributeDescription _collapseMarginAttr = new() { name = "collapse-margin", defaultValue = true };
-            
+            private UxmlBoolAttributeDescription _excludeLeftAttr = new() { name = "exclude-left", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeRightAttr = new() { name = "exclude-right", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeTopAttr = new() { name = "exclude-top", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeBottomAttr = new() { name = "exclude-bottom", defaultValue = false };
+
             public override IEnumerable<UxmlChildElementDescription> uxmlChildElementsDescription
             {
                 get { yield break; }
@@ -38,6 +46,10 @@ namespace Bitbebop
                 var ate = ve as SafeArea;
 
                 ate.CollapseMargin = _collapseMarginAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeLeft = _excludeLeftAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeRight = _excludeRightAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeTop = _excludeTopAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeBottom = _excludeBottomAttr.GetValueFromBag(bag, cc);
             }
         }
 
@@ -98,12 +110,13 @@ namespace Bitbebop
             var leftTop = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, Screen.height - safeArea.yMax));
             var rightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
 
+            // If the user has flagged an edge as excluded, set that edge to 0.
             return new Offset()
             {
-                Left = leftTop.x,
-                Right = rightBottom.x,
-                Top = leftTop.y,
-                Bottom = rightBottom.y
+                Left = ExcludeLeft ? 0 : leftTop.x,
+                Right = ExcludeRight ? 0 : rightBottom.x,
+                Top = ExcludeTop ? 0 : leftTop.y,
+                Bottom = ExcludeBottom ? 0 : rightBottom.y
             };
         }
 
