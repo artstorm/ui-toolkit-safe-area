@@ -82,10 +82,10 @@ namespace Bitbebop
                 }
                 else
                 {
-                    _contentContainer.style.marginLeft = (margin.Left + safeArea.Left);
-                    _contentContainer.style.marginRight = margin.Right + safeArea.Right;
-                    _contentContainer.style.marginTop = margin.Top + safeArea.Top;
-                    _contentContainer.style.marginBottom = margin.Bottom + safeArea.Bottom;
+                    _contentContainer.style.marginLeft = safeArea.Left;
+                    _contentContainer.style.marginRight = safeArea.Right;
+                    _contentContainer.style.marginTop = safeArea.Top;
+                    _contentContainer.style.marginBottom = safeArea.Bottom;
                 }
             }
             catch (System.InvalidCastException) {}
