@@ -9,6 +9,16 @@ namespace Bitbebop
     /// </summary>
     public class SafeArea : VisualElement
     {
+        private struct Offset
+        {
+            public float Left, Right, Top, Bottom;
+
+            public override string ToString()
+            {
+                return $"l: {Left}, r: {Right}, t:{Top}, b: {Bottom}";
+            }
+        }
+
         public new class UxmlFactory : UxmlFactory<SafeArea, UxmlTraits> {}
 
         public bool CollapseMargin { get; set; }
@@ -38,8 +48,7 @@ namespace Bitbebop
 
         public SafeArea()
         {
-            // By using absolute position to fill the entire screen area, instead of setting flex grow,
-            // SafeArea containers can be stacked.
+            // By using absolute position instead of flex to fill the full screen, SafeArea containers can be stacked.
             style.position = Position.Absolute;
             style.top = 0;
             style.bottom = 0;
@@ -57,35 +66,57 @@ namespace Bitbebop
 
         private void OnGeometryChanged(GeometryChangedEvent evt)
         {
-            // As RuntimePanelUtils is not available in UIBuilder, the handling is wrapped in a try catch statement
-            // to avoid InvalidCastExceptions when working in UIBuilder.
+            // As RuntimePanelUtils is not available in UIBuilder,
+            // the handling is wrapped in a try/catch to avoid InvalidCastExceptions when working in UIBuilder.
             try
             {
-                // Convert screen safe area to panel space.
-                var safeArea = Screen.safeArea;
-                var leftTopSafeArea = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, Screen.height - safeArea.yMax));
-                var rightBottomSafeArea = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
-
-                // Convert and calculate the right bottom margins.
-                var rightBottomScreen = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width, Screen.height));
-                var rightBottomMargin = rightBottomScreen - new Vector2(layout.xMax, layout.yMax);
+                var safeArea = GetSafeAreaOffset();
+                var margin = GetMarginOffset();
 
                 if (CollapseMargin)
                 {
-                    _contentContainer.style.marginTop = Mathf.Max(layout.y, leftTopSafeArea.y) - layout.y;
-                    _contentContainer.style.marginLeft = (Mathf.Max(layout.x, leftTopSafeArea.x)) - layout.x;
-                    _contentContainer.style.marginBottom = Mathf.Max(rightBottomMargin.y, rightBottomSafeArea.y) -rightBottomMargin.y;
-                    _contentContainer.style.marginRight = (Mathf.Max(rightBottomMargin.x, rightBottomSafeArea.x)) - rightBottomMargin.x;
+                    _contentContainer.style.marginLeft = Mathf.Max(margin.Left, safeArea.Left) - margin.Left;
+                    _contentContainer.style.marginRight = Mathf.Max(margin.Right, safeArea.Right) - margin.Right;
+                    _contentContainer.style.marginTop = Mathf.Max(margin.Top, safeArea.Top) - margin.Top;
+                    _contentContainer.style.marginBottom = Mathf.Max(margin.Bottom, safeArea.Bottom) - margin.Bottom;
                 }
                 else
                 {
-                    _contentContainer.style.marginTop = layout.y + leftTopSafeArea.y;
-                    _contentContainer.style.marginLeft = (layout.x + leftTopSafeArea.x);
-                    _contentContainer.style.marginBottom = rightBottomMargin.y + rightBottomSafeArea.y;
-                    _contentContainer.style.marginRight = rightBottomMargin.x + rightBottomSafeArea.x;
+                    _contentContainer.style.marginLeft = safeArea.Left;
+                    _contentContainer.style.marginRight = safeArea.Right;
+                    _contentContainer.style.marginTop = safeArea.Top;
+                    _contentContainer.style.marginBottom = safeArea.Bottom;
                 }
             }
             catch (System.InvalidCastException) {}
+        }
+
+        // Convert screen safe area to panel space and get the offset values from the panel edges.
+        private Offset GetSafeAreaOffset()
+        {
+            var safeArea = Screen.safeArea;
+            var leftTop = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, Screen.height - safeArea.yMax));
+            var rightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
+
+            return new Offset()
+            {
+                Left = leftTop.x,
+                Right = rightBottom.x,
+                Top = leftTop.y,
+                Bottom = rightBottom.y
+            };
+        }
+
+        // Get the resolved margins from the inline style.
+        private Offset GetMarginOffset()
+        {
+            return new Offset()
+            {
+                Left = resolvedStyle.marginLeft,
+                Right = resolvedStyle.marginRight,
+                Top = resolvedStyle.marginTop,
+                Bottom = resolvedStyle.marginBottom,
+            };
         }
     }
 }
