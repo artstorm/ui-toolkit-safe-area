@@ -26,6 +26,7 @@ namespace Bitbebop
         public bool ExcludeRight { get; set; }
         public bool ExcludeTop { get; set; }
         public bool ExcludeBottom { get; set; }
+        public bool ExcludeTvos { get; set; }
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
@@ -34,6 +35,7 @@ namespace Bitbebop
             private UxmlBoolAttributeDescription _excludeRightAttr = new() { name = "exclude-right", defaultValue = false };
             private UxmlBoolAttributeDescription _excludeTopAttr = new() { name = "exclude-top", defaultValue = false };
             private UxmlBoolAttributeDescription _excludeBottomAttr = new() { name = "exclude-bottom", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeTvosAttr = new() { name = "exclude-tvos", defaultValue = false };
 
             public override IEnumerable<UxmlChildElementDescription> uxmlChildElementsDescription
             {
@@ -50,6 +52,7 @@ namespace Bitbebop
                 ate.ExcludeRight = _excludeRightAttr.GetValueFromBag(bag, cc);
                 ate.ExcludeTop = _excludeTopAttr.GetValueFromBag(bag, cc);
                 ate.ExcludeBottom = _excludeBottomAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeTvos = _excludeTvosAttr.GetValueFromBag(bag, cc);
             }
         }
 
