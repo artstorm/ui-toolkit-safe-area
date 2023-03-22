@@ -22,11 +22,19 @@ namespace Bitbebop
         public new class UxmlFactory : UxmlFactory<SafeArea, UxmlTraits> {}
 
         public bool CollapseMargin { get; set; }
+        public bool ExcludeLeft { get; set; }
+        public bool ExcludeRight { get; set; }
+        public bool ExcludeTop { get; set; }
+        public bool ExcludeBottom { get; set; }
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
             private UxmlBoolAttributeDescription _collapseMarginAttr = new() { name = "collapse-margin", defaultValue = true };
-            
+            private UxmlBoolAttributeDescription _excludeLeftAttr = new() { name = "exclude-left", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeRightAttr = new() { name = "exclude-right", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeTopAttr = new() { name = "exclude-top", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeBottomAttr = new() { name = "exclude-bottom", defaultValue = false };
+
             public override IEnumerable<UxmlChildElementDescription> uxmlChildElementsDescription
             {
                 get { yield break; }
@@ -38,6 +46,10 @@ namespace Bitbebop
                 var ate = ve as SafeArea;
 
                 ate.CollapseMargin = _collapseMarginAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeLeft = _excludeLeftAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeRight = _excludeRightAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeTop = _excludeTopAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeBottom = _excludeBottomAttr.GetValueFromBag(bag, cc);
             }
         }
 
