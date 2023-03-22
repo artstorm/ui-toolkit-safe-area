@@ -113,6 +113,11 @@ namespace Bitbebop
             var leftTop = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, Screen.height - safeArea.yMax));
             var rightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
 
+#if UNITY_TVOS
+            if (ExcludeTvos)
+                return new Offset { Left = 0, Right = 0, Top = 0, Bottom = 0 };
+#endif
+
             // If the user has flagged an edge as excluded, set that edge to 0.
             return new Offset()
             {
