@@ -69,9 +69,11 @@ namespace Bitbebop
             style.bottom = 0;
             style.left = 0;
             style.right = 0;
+            pickingMode = PickingMode.Ignore;
             
             _contentContainer = new VisualElement();
             _contentContainer.name = "safe-area-content-container";
+            _contentContainer.pickingMode = PickingMode.Ignore;
             _contentContainer.style.flexGrow = 1;
             _contentContainer.style.flexShrink = 0;
             hierarchy.Add(_contentContainer);
