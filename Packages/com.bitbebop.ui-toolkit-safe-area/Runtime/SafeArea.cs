@@ -61,6 +61,8 @@ namespace Bitbebop
             get => _contentContainer;
         }
 
+        private ScreenOrientation screenOrientation;
+
         public SafeArea()
         {
             // By using absolute position instead of flex to fill the full screen, SafeArea containers can be stacked.
@@ -79,6 +81,16 @@ namespace Bitbebop
             hierarchy.Add(_contentContainer);
 
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+
+            schedule.Execute(() =>
+            {
+                // Check if there is a portrait up/down (3) or landscape left/right (7) change.
+                if (((int) screenOrientation ^ (int) Screen.orientation) is 3 or 7)
+                {
+                    screenOrientation = Screen.orientation;
+                    OnGeometryChanged(null);
+                }
+            }).Every(1000 / Application.targetFrameRate);
         }
 
         private void OnGeometryChanged(GeometryChangedEvent evt)
