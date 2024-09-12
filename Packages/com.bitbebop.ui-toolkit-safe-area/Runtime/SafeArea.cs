@@ -86,10 +86,9 @@ namespace Bitbebop
             {
                 // Check if there is a portrait up/down (3) or landscape left/right (7) change.
                 if (((int) screenOrientation ^ (int) Screen.orientation) is 3 or 7)
-                {
-                    screenOrientation = Screen.orientation;
                     OnGeometryChanged(null);
-                }
+
+                screenOrientation = Screen.orientation;
             }).Every(1000 / Application.targetFrameRate);
         }
 
