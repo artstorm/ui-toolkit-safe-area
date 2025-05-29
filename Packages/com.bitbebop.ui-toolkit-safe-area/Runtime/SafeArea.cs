@@ -22,7 +22,9 @@ namespace Bitbebop
         private bool _excludeBottom;
         [UxmlAttribute("exclude-tvos")]
         private bool _excludeTvos;
-        
+        [UxmlAttribute("force-orientation-check")]
+        private bool _forceOrientationCheck; 
+
         private struct Offset
         {
             public float Left, Right, Top, Bottom;
@@ -38,8 +40,10 @@ namespace Bitbebop
             get => _contentContainer;
         }
 
-        private ScreenOrientation screenOrientation;
-
+        // Handle polling for orientation changes.
+        private ScreenOrientation _screenOrientation;
+        private IVisualElementScheduledItem _orientationPoller;
+        
         public SafeArea()
         {
             // By using absolute position instead of flex to fill the full screen, SafeArea containers can be stacked.
@@ -57,18 +61,41 @@ namespace Bitbebop
             _contentContainer.style.flexShrink = 0;
             hierarchy.Add(_contentContainer);
 
+            RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
+            RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
             RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
 
-            schedule.Execute(() =>
+            // Setup a scheduled item that can poll for orientation changes. Starts in a paused state.
+            _orientationPoller = schedule.Execute(() =>
             {
+                // Don't run if not in a panel (prevents errors on detached elements)
+                if (panel == null) return; 
+
                 // Check if there is a portrait up/down (3) or landscape left/right (7) change.
-                if (((int) screenOrientation ^ (int) Screen.orientation) is 3 or 7)
+                if (((int) _screenOrientation ^ (int) Screen.orientation) is 3 or 7)
                     OnGeometryChanged(null);
 
-                screenOrientation = Screen.orientation;
-            }).Every(1000 / Application.targetFrameRate);
+                _screenOrientation = Screen.orientation;
+            }).Every(250); // Poll at reasonable fixed interval (4 times a second).
+            _orientationPoller.Pause();
         }
 
+        private void OnAttachToPanel(AttachToPanelEvent evt)
+        {
+            // Start the orientation poller if it is enabled
+            if (_forceOrientationCheck)
+            {
+                _screenOrientation = Screen.orientation;
+                _orientationPoller?.Resume();
+            }
+        }
+
+        private void OnDetachFromPanel(DetachFromPanelEvent evt)
+        {
+            // Always stop the polling when detached from a panel.
+            _orientationPoller?.Pause();
+        }
+        
         private void OnGeometryChanged(GeometryChangedEvent evt)
         {
             // As RuntimePanelUtils is not available in UIBuilder,
