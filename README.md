@@ -23,6 +23,7 @@ The goal of the safe area container is to provide a custom control to simplify h
 - Option to collapse margins with the safe area.
 - Option to exclude specific safe area edges.
 - Option to exclude safe area on tvOS.
+- Option to force polling for 180-degree orientation flips.
 
 ## Usage
 
@@ -57,6 +58,10 @@ With exclude edges, the safe area value of `left`, `right`, `top` and `bottom` e
 ### Exclude tvOS
 
 This option excludes the safe area values for all edges on tvOS. If selected, tvOS builds will not use safe area but only the margin values.
+
+### Force Orientation Check
+
+Enables polling to ensure safe area updates during 180-degree device rotations (e.g., Landscape Left to Right) if normal updates fail. Use if UI alignment is incorrect after such flips. It seems that under some circumstances and/or setups this can be a problem. Adds minor overhead; enable only if needed.
 
 ## Installation
 
