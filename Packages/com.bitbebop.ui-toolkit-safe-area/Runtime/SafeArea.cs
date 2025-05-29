@@ -11,7 +11,7 @@ namespace Bitbebop
     public partial class SafeArea : VisualElement
     {
         [UxmlAttribute("collapse-margins")]
-        private bool _collapseMargins;
+        private bool _collapseMargins = true;
         [UxmlAttribute("exclude-left")]
         private bool _excludeLeft;
         [UxmlAttribute("exclude-right")]
