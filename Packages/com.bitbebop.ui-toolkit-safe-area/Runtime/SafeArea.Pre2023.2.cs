@@ -1,4 +1,8 @@
-#if UNITY_2023_2_OR_NEWER
+// This file provides the SafeArea implementation for Unity versions older than 2023.2.
+// It utilizes the UxmlFactory/UxmlTraits pattern for UXML attribute handling.
+// The modern, actively maintained version (using [UxmlElement]/[UxmlAttribute]) is in SafeArea.cs.
+#if !UNITY_2023_2_OR_NEWER
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,22 +11,8 @@ namespace Bitbebop
     /// <summary>
     /// SafeArea Container for UI Toolkit.
     /// </summary>
-    [UxmlElement]
-    public partial class SafeArea : VisualElement
+    public class SafeArea : VisualElement
     {
-        [UxmlAttribute("collapse-margins")]
-        private bool _collapseMargins = true;
-        [UxmlAttribute("exclude-left")]
-        private bool _excludeLeft;
-        [UxmlAttribute("exclude-right")]
-        private bool _excludeRight;
-        [UxmlAttribute("exclude-top")]
-        private bool _excludeTop;
-        [UxmlAttribute("exclude-bottom")]
-        private bool _excludeBottom;
-        [UxmlAttribute("exclude-tvos")]
-        private bool _excludeTvos;
-        
         private struct Offset
         {
             public float Left, Right, Top, Bottom;
@@ -32,7 +22,44 @@ namespace Bitbebop
                 return $"l: {Left}, r: {Right}, t:{Top}, b: {Bottom}";
             }
         }
-        
+
+        public new class UxmlFactory : UxmlFactory<SafeArea, UxmlTraits> {}
+
+        public bool CollapseMargins { get; set; }
+        public bool ExcludeLeft { get; set; }
+        public bool ExcludeRight { get; set; }
+        public bool ExcludeTop { get; set; }
+        public bool ExcludeBottom { get; set; }
+        public bool ExcludeTvos { get; set; }
+
+        public new class UxmlTraits : VisualElement.UxmlTraits
+        {
+            private UxmlBoolAttributeDescription _collapseMarginsAttr = new() { name = "collapse-margins", defaultValue = true };
+            private UxmlBoolAttributeDescription _excludeLeftAttr = new() { name = "exclude-left", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeRightAttr = new() { name = "exclude-right", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeTopAttr = new() { name = "exclude-top", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeBottomAttr = new() { name = "exclude-bottom", defaultValue = false };
+            private UxmlBoolAttributeDescription _excludeTvosAttr = new() { name = "exclude-tvos", defaultValue = false };
+
+            public override IEnumerable<UxmlChildElementDescription> uxmlChildElementsDescription
+            {
+                get { yield break; }
+            }
+
+            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
+            {
+                base.Init(ve, bag, cc);
+                var ate = ve as SafeArea;
+
+                ate.CollapseMargins = _collapseMarginsAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeLeft = _excludeLeftAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeRight = _excludeRightAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeTop = _excludeTopAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeBottom = _excludeBottomAttr.GetValueFromBag(bag, cc);
+                ate.ExcludeTvos = _excludeTvosAttr.GetValueFromBag(bag, cc);
+            }
+        }
+
         private VisualElement _contentContainer;
         public override VisualElement contentContainer {
             get => _contentContainer;
@@ -67,7 +94,7 @@ namespace Bitbebop
                 var safeArea = GetSafeAreaOffset();
                 var margin = GetMarginOffset();
 
-                if (_collapseMargins)
+                if (CollapseMargins)
                 {
                     _contentContainer.style.marginLeft = Mathf.Max(margin.Left, safeArea.Left) - margin.Left;
                     _contentContainer.style.marginRight = Mathf.Max(margin.Right, safeArea.Right) - margin.Right;
@@ -93,17 +120,17 @@ namespace Bitbebop
             var rightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
 
 #if UNITY_TVOS
-            if (_excludeTvos)
+            if (ExcludeTvos)
                 return new Offset { Left = 0, Right = 0, Top = 0, Bottom = 0 };
 #endif
 
             // If the user has flagged an edge as excluded, set that edge to 0.
             return new Offset()
             {
-                Left = _excludeLeft ? 0 : leftTop.x,
-                Right = _excludeRight ? 0 : rightBottom.x,
-                Top = _excludeTop ? 0 : leftTop.y,
-                Bottom = _excludeBottom ? 0 : rightBottom.y
+                Left = ExcludeLeft ? 0 : leftTop.x,
+                Right = ExcludeRight ? 0 : rightBottom.x,
+                Top = ExcludeTop ? 0 : leftTop.y,
+                Bottom = ExcludeBottom ? 0 : rightBottom.y
             };
         }
 
