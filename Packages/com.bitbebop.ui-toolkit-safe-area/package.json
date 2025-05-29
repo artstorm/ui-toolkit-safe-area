@@ -1,6 +1,6 @@
 {
   "name": "com.bitbebop.ui-toolkit-safe-area",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "displayName": "UI Toolkit Safe Area",
   "description": "A Safe Area Container for UI Toolkit.",
   "unity": "2021.3",
