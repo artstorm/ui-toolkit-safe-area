@@ -1,3 +1,4 @@
+#if !UNITY_2023_2_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -143,3 +144,4 @@ namespace Bitbebop
         }
     }
 }
+#endif
